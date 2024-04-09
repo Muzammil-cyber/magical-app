@@ -29,7 +29,8 @@ const app = new Elysia()
   )
   .use(staticPlugin({
     assets: path.join(__dirname, "frontend/dist"),
-    prefix: '/'
+    prefix: '/',
+
 
   }))
   // .group("/api/users", (app) => app.use(userRouter))

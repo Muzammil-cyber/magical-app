@@ -3,7 +3,8 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cd src/frontend && bunx --bun vite build && cd ../../ && bun run --watch src/index.ts"
+    "dev": "cd src/frontend && bunx --bun vite build && cd ../../ && bun run --watch src/index.ts",
+    "build": "cd src/frontend && bunx --bun vite build && cd ../../ && bun build src/index.ts"
   },
   "prisma": {
     "seed": "node src/backend/db/seed.ts"
