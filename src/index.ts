@@ -18,7 +18,7 @@ const app = new Elysia()
     swagger({
       documentation: {
         info: {
-          title: "Todos API Documentation",
+          title: "Magical API Documentation",
           description: "Elysia BunJS Todos API",
           version: "1.0.0",
         },
@@ -30,8 +30,6 @@ const app = new Elysia()
   .use(staticPlugin({
     assets: path.join(__dirname, "frontend/dist"),
     prefix: '/',
-
-
   }))
   // .group("/api/users", (app) => app.use(userRouter))
   .group("/api", (app) => app.use(api))

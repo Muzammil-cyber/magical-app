@@ -1,5 +1,5 @@
 {
-  "name": "todo-app",
+  "name": "magical-app",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,6 +9,7 @@
   "prisma": {
     "seed": "node src/backend/db/seed.ts"
   },
+  "type": "module",
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/html": "^1.0.2",
