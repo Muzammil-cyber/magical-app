@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import Navbar from "./Layout/Navbar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,19 +8,17 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="max-w-screen max-h-screen flex flex-col">
-      <header className="navbar bg-base-100  justify-center border-b-2">
-        <Link
-          to={"/"}
-          className="text-xl hover:cursor-pointer font-bold uppercase"
-        >
-          Magical
-        </Link>
-      </header>
-      <div className="flex-grow overflow-y-scroll p-4">{children}</div>
+    <div className="max-w-screen max-h-screen h-screen w-screen flex flex-col">
+      <Navbar />
+      <div className="flex-grow overflow-y-auto p-4 bg-[url('bg.png')]">
+        {children}
+      </div>
       <footer className="footer footer-center p-4 bg-base-300 text-base-content">
         <aside>
-          <p>Copyright © 2024 - All right reserved by ACME Industries Ltd</p>
+          <p>
+            Copyright © {new Date().getFullYear()} - All right reserved by
+            Muzamil-cyber
+          </p>
         </aside>
       </footer>
     </div>

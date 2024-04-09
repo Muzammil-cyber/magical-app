@@ -3,7 +3,7 @@ export type PostIdType = string
 export interface PostType {
     id: PostIdType;
     title: string;
-    createdAt: Date;
+    createdAt: string;
     content: string;
     authorId: string;
 }

@@ -7,9 +7,13 @@ const Home = () => {
 
   useEffect(() => {
     fetch("/api/posts").then(async (res) => setPosts(await res.json()));
+    // unmount
+    return () => {
+      setPosts(undefined);
+    };
   }, []);
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4 ">
       {posts ? posts.map((post) => <PostCard key={post.id} {...post} />) : null}
     </div>
   );

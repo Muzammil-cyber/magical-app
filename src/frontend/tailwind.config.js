@@ -12,7 +12,7 @@ export default {
       {
         mytheme: {
           primary: "#111827",
-          secondary: "#ffffff",
+          secondary: "#f3f4f6",
           accent: "#f3f4f6",
           neutral: "#111827",
           "base-100": "#ffffff",
@@ -20,6 +20,7 @@ export default {
           success: "#00ff00",
           warning: "#fef08a",
           error: "#f87171",
+          default: "#ffffff",
         },
       },
     ],
