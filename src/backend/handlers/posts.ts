@@ -2,16 +2,22 @@ import { Cookie } from "elysia";
 import db from "../db";
 import verifyToken from "../lib/verifyToken";
 
-export function getPosts() {
+export function getPosts(authorId?: string) {
     try {
         return db.post.findMany({
+            where: {
+                authorId: authorId
+            },
             select: {
                 title: true,
                 content: true,
                 id: true,
                 authorId: true,
                 createdAt: true,
-            }
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
         })
     } catch (error) {
         return { error };
@@ -31,7 +37,7 @@ export function getPost(id: string) {
                 id: true,
                 authorId: true,
                 createdAt: true,
-            }
+            },
         })
     } catch (error) {
         return { error };
@@ -90,22 +96,5 @@ export function updatePost(id: string, authorId: string, { title, content }: { t
     }
 }
 
-export function getPostsByUser(authorId: string) {
-    try {
-        return db.post.findMany({
-            where: {
-                authorId: authorId
-            },
-            select: {
-                title: true,
-                content: true,
-                id: true,
-                authorId: true,
-                createdAt: true,
-            }
-        })
-    } catch (error) {
-        return { error };
-    }
-}
+
 

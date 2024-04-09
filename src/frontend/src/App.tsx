@@ -1,28 +1,36 @@
-import { useEffect } from "react";
-
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Layout from "./components/Layout";
+import AddPost from "./pages/AddPost";
+import YourPosts from "./pages/YourPosts";
+import { useContext } from "react";
+import { AuthContext } from "./libs/AuthContext";
 
 function App() {
-  useEffect(() => {
-    fetch("/api/users").then(async (res) => {
-      const data = await res.json();
-      console.log(
-        data.map((user: { id: string; username: string }) => user.username)
-      );
-    });
-  }, []);
-
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/register"
+          element={isAuthenticated ? <Navigate to="/" /> : <Register />}
+        />
+        <Route
+          path="/add-post"
+          element={isAuthenticated ? <AddPost /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/your-posts"
+          element={isAuthenticated ? <YourPosts /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<div>404 Not Found</div>} />{" "}
       </Routes>
     </Layout>

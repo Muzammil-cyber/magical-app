@@ -16,7 +16,13 @@ export async function login(body: UserBodyType, auth: Cookie<string | undefined>
     }
     const userID = user.id;
     const token = await generateToken(userID);
-    auth.value = token; // update the header with new token
+    auth.set({
+        value: token,
+        path: "/",
+        secure: true,
+        maxAge: 60 * 60 * 24, // 24 hours
+        priority: 'high'
+    }); // update the header with new token
 
     return { status: 200, body: { token, user } };
 }
@@ -37,14 +43,29 @@ export async function register(body: UserBodyType, auth: Cookie<string | undefin
     });
     const userID = newUser.id;
     const token = await generateToken(userID);
-    auth.value = token; // update the header with new token
+    auth.set({
+        value: token,
+        path: "/",
+        secure: true,
+        maxAge: 60 * 60 * 24, // 24 hours
+        priority: 'high'
+    }); // update the header with new token
     return { status: 201, body: { token, user: newUser } };
 }
 
 export async function logout(auth: Cookie<string | undefined>) {
-    if (!auth) {
+
+    if (!auth.value) {
         return { status: 401, body: { message: "Not logged in" } };
     }
-    auth.remove() // update the header with new token
+    try {
+        auth.remove()
     return { status: 200, body: { message: "Logged out" } };
+
+    } catch (error) {
+        return { status: 401, body: error };
+    }
+
+
+    // update the header with new token
 }

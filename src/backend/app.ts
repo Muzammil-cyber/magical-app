@@ -2,7 +2,7 @@ import Elysia, { t } from "elysia";
 import { login, logout, register } from "./handlers/auth";
 import { deleteUser, getUser, getUsers } from "./handlers/users";
 import verifyToken from "./lib/verifyToken";
-import { deletePost, getPost, getPosts, getPostsByUser } from "./handlers/posts";
+import { createPost, deletePost, getPost, getPosts } from "./handlers/posts";
 
 const UserBodyType = t.Object({
     username: t.String({
@@ -24,9 +24,8 @@ const api = new Elysia()
     // POSTS ROUTE
     .get("/users", async () => getUsers())
     .get("/users/:id", async ({ params }) => getUser(params.id))
-    .get("/posts", async () => getPosts())
+    .get("/posts", async ({ query }) => getPosts(query.authorId), { query: t.Object({ authorId: t.Optional(t.String()) }) })
     .get("/posts/:id", async ({ params }) => getPost(params.id))
-    .get("/posts?authorId=:", async ({ query }) => getPostsByUser(query.authorId), { query: t.Object({ authorId: t.String() }) })
     // AUTHORIZTED USERS ONLY
     .guard({
         beforeHandle({ cookie: { auth } }) {
@@ -35,14 +34,25 @@ const api = new Elysia()
                 return { status: 401, message: 'Unauthorized' }
             } 
         },
+        cookie: t.Optional(t.Object({
+            auth: t.Optional(t.String())
+        }))
+
     })
-    .post("logout", ({ cookie: { auth } }) => logout(auth))
+    .post("/logout", ({ cookie: { auth } }) => logout(auth))
     .delete("/users/:id", async ({ params, cookie: { auth } }) => deleteUser(params.id, auth))
     .delete(
         "/posts/:id",
         async ({ params, cookie: { auth }, body }) => deletePost(params.id, body.authorId, auth),
         { body: t.Object({ authorId: t.String() }) }
     )
+    .post("/posts", async ({ body }) => createPost(body), {
+        body: t.Object({
+            authorId: t.String(),
+            title: t.String(),
+            content: t.String()
+        })
+    })
     .get('/', async () => ({ message: 'Hello World' }));
 
 export default api;

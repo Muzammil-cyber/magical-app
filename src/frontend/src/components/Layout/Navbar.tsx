@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import useAuth from "../../libs/useAuth";
+
 import Avatar from "./Avatar";
+import { useContext } from "react";
+import { AuthContext } from "../../libs/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">

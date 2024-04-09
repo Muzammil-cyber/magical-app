@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { AuthContext } from "../../libs/AuthContext";
+import { Link } from "react-router-dom";
+
 const Avatar = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <div className="dropdown dropdown-end">
       <div
@@ -18,13 +23,13 @@ const Avatar = () => {
         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
-          <a>Your Posts</a>
+          <Link to={"/your-posts"}>Your Posts</Link>
         </li>
         <li>
-          <a>Add Post</a>
+          <Link to={"/add-post"}>Add Post</Link>
         </li>
         <li>
-          <a>Logout</a>
+          <button onClick={logout}>Logout</button>
         </li>
       </ul>
     </div>
