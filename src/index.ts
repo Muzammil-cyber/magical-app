@@ -6,15 +6,12 @@ import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 
 import { jwt } from '@elysiajs/jwt'
-import router from "./backend/app";
+import api from "./backend/app";
 
 
-await Bun.build({
-  entrypoints: ['src/frontend/src/main.tsx'],
-  outdir: 'public/dist',
-
-})
-
+/**
+ * The main application instance.
+ */
 const app = new Elysia()
   .use(jwt({ name: 'jwt', secret: process.env.JWT_SECRET as string }))
   .use(
@@ -36,7 +33,7 @@ const app = new Elysia()
 
   }))
   // .group("/api/users", (app) => app.use(userRouter))
-  .group("", (app) => app.use(router))
+  .group("/api", (app) => app.use(api))
   .listen(3000);
 
 console.log(

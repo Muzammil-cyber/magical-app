@@ -1,12 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
-
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
+
+const genSalt = bcrypt.genSaltSync(8);
+const hash = bcrypt.hashSync('admin', genSalt);
+
 
 const init = {
     id: '1',
     username: 'admin',
-    password: 'admin',
+    password: hash,
     posts: {
         create: { title: 'Hello World', content: "This is my first post" },
     },

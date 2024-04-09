@@ -1,6 +1,8 @@
 import { UserBodyType } from '../types/users';
 import bcrypt from 'bcryptjs';
 import db from '../db'
+import verifyToken from '../lib/verifyToken';
+import { Cookie } from 'elysia';
 
 
 export async function getUsers() {
@@ -36,17 +38,19 @@ export async function getUser(id: string) {
     }
 }
 
-
-
-
-export async function deleteUser(id: string) {
+export async function deleteUser(id: string, auth: Cookie<string | undefined>) {
+    const resId = verifyToken(auth);
     try {
+        if (!resId || resId !== id) {
+            return { error: 'Unauthorized' }
+        }
         fetch("auth/logout", {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
+        await db.post.deleteMany({ where: { authorId: id } }) // Delete all posts of User
         return await db.user.delete({
             where: {
                 id: id
