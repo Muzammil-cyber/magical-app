@@ -19,7 +19,7 @@ const app = new Elysia()
       documentation: {
         info: {
           title: "Magical API Documentation",
-          description: "Elysia BunJS Todos API",
+          description: "Elysia BunJS Magical API",
           version: "1.0.0",
         },
         tags: [{ name: "POSTS", description: "POSTS endpoints" }, { name: 'USERS', description: 'USERS endpoints' }, { name: 'AUTH', description: 'AUTH endpoints' }],
