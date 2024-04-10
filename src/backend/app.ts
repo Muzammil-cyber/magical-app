@@ -19,13 +19,12 @@ const api = new Elysia()
             auth: t.Optional(t.String())
         }))
     })
-    .post("/login", async ({ body, cookie: { auth } }) => login(body, auth), { body: UserBodyType })
-    .post("/register", async ({ body, cookie: { auth } }) => register(body, auth), { body: UserBodyType })
-    // POSTS ROUTE
-    .get("/users", async () => getUsers())
-    .get("/users/:id", async ({ params }) => getUser(params.id))
-    .get("/posts", async ({ query }) => getPosts(query.authorId), { query: t.Object({ authorId: t.Optional(t.String()) }) })
-    .get("/posts/:id", async ({ params }) => getPost(params.id))
+    .post("/login", async ({ body, cookie: { auth } }) => login(body, auth), { body: UserBodyType, detail: { tags: ['AUTH'] } })
+    .post("/register", async ({ body, cookie: { auth } }) => register(body, auth), { body: UserBodyType, detail: { tags: ['AUTH'] } })
+    .get("/users", async () => getUsers(), { detail: { tags: ['USERS'] } })
+    .get("/users/:id", async ({ params }) => getUser(params.id), { detail: { tags: ['USERS'] } })
+    .get("/posts", async ({ query }) => getPosts(query.authorId), { query: t.Object({ authorId: t.Optional(t.String()) }), detail: { tags: ['POSTS'] } })
+    .get("/posts/:id", async ({ params }) => getPost(params.id), { detail: { tags: ['POSTS'] } })
     // AUTHORIZTED USERS ONLY
     .guard({
         beforeHandle({ cookie: { auth } }) {
@@ -39,19 +38,22 @@ const api = new Elysia()
         }))
 
     })
-    .post("/logout", ({ cookie: { auth } }) => logout(auth))
-    .delete("/users/:id", async ({ params, cookie: { auth } }) => deleteUser(params.id, auth))
+    .post("/logout", ({ cookie: { auth } }) => logout(auth), { detail: { tags: ['AUTH'] } })
+    .delete("/users/:id", async ({ params, cookie: { auth } }) => deleteUser(params.id, auth), { detail: { tags: ['USERS'] } })
     .delete(
         "/posts/:id",
         async ({ params, cookie: { auth }, body }) => deletePost(params.id, body.authorId, auth),
-        { body: t.Object({ authorId: t.String() }) }
+        { body: t.Object({ authorId: t.String() }), detail: { tags: ['POSTS'] } }
     )
     .post("/posts", async ({ body }) => createPost(body), {
         body: t.Object({
             authorId: t.String(),
             title: t.String(),
             content: t.String()
-        })
+        }),
+        detail: {
+            tags: ['POSTS']
+        }
     })
     .get('/', async () => ({ message: 'Hello World' }));
 

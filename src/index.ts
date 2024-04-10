@@ -16,6 +16,7 @@ const app = new Elysia()
   .use(jwt({ name: 'jwt', secret: process.env.JWT_SECRET as string }))
   .use(
     swagger({
+      provider: "swagger-ui",
       documentation: {
         info: {
           title: "Magical API Documentation",
